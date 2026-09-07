@@ -30,29 +30,6 @@ The design consists of the following blocks, all operating on a shared clock:
 - **Empty flag** — asserted when occupancy counter is 0
 - **Read/write enable control** — gates pointer increments and memory access based on `read_en`/`write_en` and current full/empty state, preventing overflow and underflow
 
-### Block-level structure
-
-```
-        write_data[7:0]                          read_data[7:0]
-             │                                          ▲
-             ▼                                          │
-  ┌────────────────────────────────────────────────────────┐
-  │                     Memory Array (16×8)                 │
-  │                  (distributed RAM / LUTRAM)              │
-  └────────────────────────────────────────────────────────┘
-        ▲                                          ▲
-   write_pointer                              read_pointer
-        ▲                                          ▲
-   write_en ──► [Control Logic] ◄────────────── read_en
-                      │
-              ┌───────┴────────┐
-              │ Occupancy Ctr  │──► full
-              │  (5-bit)       │──► empty
-              └────────────────┘
-```
-
----
-
 ## 3. Verification
 
 Verified using a self-checking Verilog testbench (`tb/tb_fifo.v`) with the following test plan:
@@ -94,31 +71,6 @@ See `docs/` for waveform screenshots of key test cases.
 
 The remaining 17 LUTs and 21 flip-flops implement the write/read pointers (4 bits each), the occupancy counter (5 bits), and full/empty comparison logic.
 
-### Timing
-
-⚠️ **Note:** No clock timing constraint (XDC) was applied for this run, so no target-frequency timing closure (WNS) has been verified yet. "Implementation Complete" here confirms the design was successfully placed and routed structurally, not that it meets a specific operating frequency. Adding a proper clock constraint and re-checking timing is listed as a next step below.
-
----
-
-## 5. Repository Structure
-
-```
-synchronous-fifo-rtl/
-├── rtl/
-│   └── fifo.v                  # FIFO RTL design
-├── tb/
-│   └── tb_fifo.v               # Self-checking testbench
-├── docs/
-│   ├── waveform_simultaneous_rw.png
-│   ├── waveform_full_detection.png
-│   ├── waveform_empty_detection.png
-│   ├── schematic_fifo.png      # Post-synthesis gate-level schematic
-│   ├── design_fifo.png         # Physical placement (Device view)
-│   └── utilization_report.png
-└── README.md
-```
-
----
 
 ## 6. Tools Used
 
@@ -128,14 +80,6 @@ synchronous-fifo-rtl/
 
 ---
 
-## 7. Next Steps
-
-- [ ] Add clock constraint (XDC) and verify timing closure (WNS) at a target frequency
-- [ ] Generate bitstream and validate on physical hardware (if a board is available)
-- [ ] Extend to an asynchronous (dual-clock) FIFO version for cross-clock-domain use cases
-
----
-
 ## Author
 
-Palak — [LinkedIn/GitHub link here]
+Palak Gupta

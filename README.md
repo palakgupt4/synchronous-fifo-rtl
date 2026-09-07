@@ -1,52 +1,55 @@
 # Synchronous FIFO RTL Design
 
-A synchronous First-In-First-Out (FIFO) memory designed and verified using Verilog HDL and Xilinx Vivado.
+## Overview
 
-## Project Overview
+This project implements and verifies an **8-bit × 16-depth synchronous FIFO (First-In-First-Out)** using **Verilog HDL**.
 
-This project implements an 8-bit wide, 16-depth synchronous FIFO. Data is written into the FIFO on the active clock edge when `write_en` is asserted and read when `read_en` is asserted.
+The FIFO stores data in sequential order and ensures that the first data written is the first data read. The design includes read/write control logic, read and write pointers, and `full` and `empty` status flags.
 
-The design includes read/write pointer management and `full`/`empty` status flags to prevent invalid read and write operations.
+The design was developed, simulated, debugged, and synthesized using **Xilinx Vivado**.
+
+---
+
+## Objectives
+
+The main objectives of this project are:
+
+- Design a synchronous FIFO using Verilog HDL
+- Implement read and write pointer management
+- Generate `full` and `empty` status flags
+- Prevent FIFO overflow and underflow
+- Verify FIFO functionality using a self-checking testbench
+- Analyze RTL simulation waveforms
+- Perform RTL synthesis and examine resource utilization
+
+---
 
 ## Specifications
 
-| Parameter | Value |
+| Parameter | Description |
 |---|---|
+| FIFO Type | Synchronous FIFO |
 | Data Width | 8 bits |
-| FIFO Depth | 16 |
-| Clock | Single synchronous clock |
-| Reset | Synchronous |
+| FIFO Depth | 16 entries |
+| Clock | Single clock |
+| Reset | Synchronous reset |
 | Write Control | `write_en` |
 | Read Control | `read_en` |
+| Data Input | 8-bit |
+| Data Output | 8-bit |
 | Status Flags | `full`, `empty` |
 
-## Design Features
+---
 
-- 8-bit data storage
-- 16 memory locations
-- Synchronous read/write operation
-- Read and write pointer management
-- Full and empty flag generation
-- Overflow protection
-- Underflow protection
-- Pointer wrap-around
-- Simultaneous read/write operation
+## FIFO Architecture
 
-## Project Structure
+The FIFO consists of the following main components:
+
+### 1. Memory Array
+
+The memory array stores the data written into the FIFO.
+
+For this implementation:
 
 ```text
-synchronous-fifo-rtl/
-│
-├── rtl/
-│   └── fifo.v
-│
-├── tb/
-│   └── tb_fifo.v
-│
-├── docs/
-│   ├── waveform_fifo.png
-│   ├── schematic_fifo.png
-│   ├── design_fifo.png
-│   └── Utilization_report_fifo.png
-│
-└── README.md
+16 locations × 8 bits
